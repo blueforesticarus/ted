@@ -1,0 +1,7 @@
+Animal List
+ANIMAL,LEGS,ARMS,CLAWS,TAIL
+human,2,2,no,no
+fish,0,0,yes,yes
+dog,4,0,yes,yes
+cat,4,0,yes,yes
+penguin,(2),2,no,yes
