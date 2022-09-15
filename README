@@ -1,0 +1,16 @@
+TEd : Table Editor
+It's like vim for spreadsheets.
+
+row mode
+column mode
+navigation minigrid
+
+vaguely vim keybinds:
+i to insert
+navigate with arrow keys or hjkl
+:w to save
+:q to quit
+some other stuff read the code I don't remember
+
+--
+see docs for delusions of grandeur

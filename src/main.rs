@@ -508,12 +508,11 @@ fn normal_draw(mode: &mut Mode) {
                 if (xx, yy) == mode.position {
                     line.push_str(invr.as_str());
                     line.push_str(a);
-                } else if xx == mode.position.0 && mode.view == ViewMode::Column {
+                } else if ( xx == mode.position.0 && mode.view == ViewMode::Column )
+                       || ( yy == mode.position.1 && mode.view == ViewMode::Row )
+                {
                     line.push_str(invr.as_str());
-                    line.push_str("⏹");
-                } else if yy == mode.position.1 && mode.view == ViewMode::Row {
-                    line.push_str(invr.as_str());
-                    line.push_str("⏹");
+                    line.push('⏹');
                 } else {
                     if !valid(&mode.cells, xx, yy) {
                         line.push_str(dull.as_str());
@@ -527,10 +526,10 @@ fn normal_draw(mode: &mut Mode) {
                 if x == mode.minimap_width - 1 || mode.view == ViewMode::Column {
                     line.push_str(norm.as_str());
                 }
-                line.push_str(" ");
+                line.push(' ');
                 line.push_str(norm.as_str());
             }
-            write!(mode.stdout, "{}{} ", termion::cursor::Goto(2, y + 2), line);
+            write!(mode.stdout, "{}{} ", termion::cursor::Goto(2, y + 2), line).unwrap();
         }
 
         write!(
@@ -587,9 +586,9 @@ fn normal_draw(mode: &mut Mode) {
                 ViewMode::Row => i + mode.offset,
                 ViewMode::Column => mode.position.0,
             };
+
             let active = (m, n) == mode.position;
             let contents = mode.cells.get(n as usize);
-            let mlen = mode.dims.0 - mode.margin - 5;
             let (cell, invalid) = match contents {
                 Some(cell) => match cell.get(m as usize) {
                     Some(cell) => (cell.to_string(), false),
@@ -598,6 +597,7 @@ fn normal_draw(mode: &mut Mode) {
                 None => ("¶".to_string(), false),
             };
 
+            let mlen = mode.dims.0 - mode.margin - 5;
             let cell = if active && mode.input == InputMode::Insert {
                 mode.command.clone()
             } else {
@@ -611,7 +611,7 @@ fn normal_draw(mode: &mut Mode) {
                     if active {
                         &invr
                     } else if invalid {
-                        &norm //&red
+                        &red
                     } else {
                         &norm
                     }
